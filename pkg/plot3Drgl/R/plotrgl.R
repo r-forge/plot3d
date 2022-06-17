@@ -132,7 +132,15 @@ plotrglplist <- function(plist, lighting = FALSE, new = TRUE, smooth = FALSE,
     changedimg <- FALSE
     for (i in 1:plist$imgnr) {
       img <- plist$img[[i]]
-      if (is.null(plist$img[[i]]$col.full)) {
+      
+      # need colors on the vertices not on facets
+      # check if col.full has correct dimensions
+      change <- is.null(img$col.full)
+      
+      if (! change) 
+        change <- any(dim(img$col.full) - dim(img$col) != 1) 
+
+      if (change) {
        
         changedimg <- TRUE
         if (any(dim(img$col) - dim(img$x)) != 0) {
